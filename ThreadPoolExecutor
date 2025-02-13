@@ -1,0 +1,20 @@
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+def fetch_url(url):
+    try:
+        response = requests.get(url, timeout=5)
+        print(f"Fetched {url} with status: {response.status_code}")
+    except Exception as e:
+        print(f"Error fetching {url}: {e}")
+
+if __name__ == '__main__':
+    urls = [
+        'https://www.example.com',
+        'https://www.google.com',
+        'https://www.python.org',
+        'https://www.github.com',
+        # 你可以继续添加更多 URL
+    ]
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        executor.map(fetch_url, urls)
