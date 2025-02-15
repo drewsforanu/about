@@ -1,0 +1,26 @@
+# 示例 1: 基于元类的插件系统
+class PluginMeta(type):
+    registry = {}  # 存放所有插件的注册信息
+
+    def __new__(mcs, name, bases, attrs):
+        cls = super().__new__(mcs, name, bases, attrs)
+        if name != 'BasePlugin':  # 排除基类自身
+            PluginMeta.registry[name] = cls
+        return cls
+
+class BasePlugin(metaclass=PluginMeta):
+    def execute(self, *args, **kwargs):
+        raise NotImplementedError("子类必须实现 execute 方法")
+
+class PluginUpper(BasePlugin):
+    def execute(self, text):
+        return text.upper()
+
+class PluginReverse(BasePlugin):
+    def execute(self, text):
+        return text[::-1]
+
+if __name__ == '__main__':
+    text = "hello"
+    for name, plugin in PluginMeta.registry.items():
+        print(f"{name}: {plugin().execute(text)}")
