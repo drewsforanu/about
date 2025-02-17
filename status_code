@@ -1,0 +1,21 @@
+import threading
+import requests
+
+urls = [
+    "https://example.com",
+    "https://example.org",
+    "https://example.net"
+]
+
+def fetch_url(url):
+    response = requests.get(url)
+    print(f"{url}: {response.status_code}")
+
+threads = []
+for url in urls:
+    thread = threading.Thread(target=fetch_url, args=(url,))
+    threads.append(thread)
+    thread.start()
+
+for thread in threads:
+    thread.join()
