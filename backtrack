@@ -1,0 +1,23 @@
+# Python 全排列实现
+def permute(nums):
+    def backtrack(first=0):
+        # 当所有位置都固定时，加入排列结果
+        if first == n:
+            output.append(nums[:])
+        for i in range(first, n):
+            nums[first], nums[i] = nums[i], nums[first]  # 交换
+            backtrack(first + 1)
+            nums[first], nums[i] = nums[i], nums[first]  # 回溯，恢复原状
+
+    n = len(nums)
+    output = []
+    backtrack()
+    return output
+
+# 测试代码
+if __name__ == '__main__':
+    data = [1, 2, 3]
+    results = permute(data)
+    print("全排列结果:")
+    for perm in results:
+        print(perm)
