@@ -1,0 +1,28 @@
+import requests
+from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
+
+def scrape_page(url):
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        title = soup.find('title').get_text() if soup.find('title') else 'No Title'
+        return url, title
+    except Exception as e:
+        return url, f"Error: {e}"
+
+def main(urls):
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        results = list(executor.map(scrape_page, urls))
+    for url, title in results:
+        print(f"URL: {url} => Title: {title}")
+
+if __name__ == '__main__':
+    urls = [
+        'https://www.example.com',
+        'https://www.python.org',
+        'https://www.github.com',
+        'https://www.stackoverflow.com'
+    ]
+    main(urls)
