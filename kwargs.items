@@ -1,0 +1,16 @@
+def debug(func):
+    def wrapper(*args, **kwargs):
+        args_str = ", ".join(repr(arg) for arg in args)
+        kwargs_str = ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
+        print(f"调用 {func.__name__}({args_str}, {kwargs_str})")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} 返回: {result!r}")
+        return result
+    return wrapper
+
+@debug
+def factorial(n):
+    return 1 if n == 0 else n * factorial(n - 1)
+
+if __name__ == "__main__":
+    print("5! =", factorial(5))
