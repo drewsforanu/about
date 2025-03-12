@@ -1,0 +1,24 @@
+def knapsack(weights, values, capacity):
+    memo = {}
+    
+    def dp(i, remaining):
+        if i == len(weights) or remaining <= 0:
+            return 0
+        if (i, remaining) in memo:
+            return memo[(i, remaining)]
+        
+        # 不选当前物品
+        res = dp(i + 1, remaining)
+        # 如果可以放得下，则尝试选当前物品
+        if weights[i] <= remaining:
+            res = max(res, values[i] + dp(i + 1, remaining - weights[i]))
+        memo[(i, remaining)] = res
+        return res
+    
+    return dp(0, capacity)
+
+# 示例数据
+weights = [2, 3, 4, 5]
+values = [3, 4, 5, 6]
+capacity = 5
+print("最大价值：", knapsack(weights, values, capacity))
