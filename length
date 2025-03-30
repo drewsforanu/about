@@ -1,0 +1,24 @@
+const data = Array.from({ length: 50 }, () => Math.random() * 100);
+
+const svg = d3.select("body").append("svg")
+    .attr("width", 600)
+    .attr("height", 400);
+
+svg.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", (d, i) => i * 12)
+    .attr("cy", d => 400 - d * 3)
+    .attr("r", 5)
+    .style("fill", "steelblue");
+
+function updateData() {
+    data.push(Math.random() * 100);
+    data.shift();
+    svg.selectAll("circle")
+        .data(data)
+        .attr("cy", d => 400 - d * 3);
+}
+
+setInterval(updateData, 1000);
